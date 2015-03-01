@@ -58,7 +58,7 @@ case class Period(from: Time, till: Time) extends Chronos {
 }
 
 abstract class Day extends Chronos
-case object Ma extends Day
+case object Mo extends Day
 case object Tu extends Day
 case object We extends Day
 case object Th extends Day
@@ -66,6 +66,6 @@ case object Fr extends Day
 case object Sa extends Day
 case object Su extends Day
 
-case class Hours(periods: Map[Day, Seq[Period]])
+case class Hours(days: List[Day], period: Period) extends Chronos
 
 
