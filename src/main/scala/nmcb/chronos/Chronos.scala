@@ -1,21 +1,21 @@
 package nmcb.chronos
-import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
-import java.time.temporal.{TemporalAccessor, ChronoField}
+import java.time.temporal.ChronoField
 
 sealed abstract class Chronos
 
 case class Time(hour: Int, minute: Int) extends Chronos with Ordered[Time] {
   val unit = 60
-  override def compare(that: Time) =
-    (hour * unit + minute) - (that.hour * unit + that.minute)
+  val value = hour * unit + minute
+  override def compare(that: Time) = value - that.value
 }
 
 object Time {
-  val format = DateTimeFormatter.ISO_LOCAL_TIME
+  import DateTimeFormatter._
+  import ChronoField._
   def apply(str: String): Time = {
-    val acc = format.parse(str)
-    Time(acc.get(ChronoField.HOUR_OF_DAY), acc.get(ChronoField.MINUTE_OF_HOUR))
+    val acc = ISO_LOCAL_TIME.parse(str)
+    Time(acc.get(HOUR_OF_DAY), acc.get(MINUTE_OF_HOUR))
   }
 }
 
@@ -66,6 +66,6 @@ case object Fr extends Day
 case object Sa extends Day
 case object Su extends Day
 
-case class Hours(periods: Map[Day, List[Period]])
+case class Hours(periods: Map[Day, Seq[Period]])
 
 

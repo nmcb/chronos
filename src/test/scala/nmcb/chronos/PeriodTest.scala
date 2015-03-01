@@ -2,8 +2,8 @@ package nmcb.chronos
 import org.scalatest.{FlatSpec, Matchers}
 
 /**
- * A := []
- * B := ()
+ * [] is period A
+ * () is period B
  *
  * ---[  ]--(  )---
  * ---[  (  ]  )---
