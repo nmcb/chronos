@@ -1,6 +1,4 @@
 package nmcb.chronos
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoField
 
 sealed abstract class Chronos
 
@@ -11,8 +9,8 @@ case class Time(hour: Int, minute: Int) extends Chronos with Ordered[Time] {
 }
 
 object Time {
-  import DateTimeFormatter._
-  import ChronoField._
+  import java.time.format.DateTimeFormatter._
+  import java.time.temporal.ChronoField._
   def apply(str: String): Time = {
     val acc = ISO_LOCAL_TIME.parse(str)
     Time(acc.get(HOUR_OF_DAY), acc.get(MINUTE_OF_HOUR))
@@ -57,7 +55,11 @@ case class Period(from: Time, till: Time) extends Chronos {
     }
 }
 
-abstract class Day extends Chronos
+abstract class Day extends Chronos with Ordered[Day] {
+  import nmcb.chronos.Day._
+  override def compare(that: Day) = NaturalOrdering.compare(this, that)
+}
+
 case object Mo extends Day
 case object Tu extends Day
 case object We extends Day
@@ -65,6 +67,18 @@ case object Th extends Day
 case object Fr extends Day
 case object Sa extends Day
 case object Su extends Day
+
+object Day {
+  val fromInt: Int => Day =
+    Array(Mo, Tu, We, Th, Fr, Sa, Su)
+
+  val toInt: Day => Int =
+    Map(Mo -> 0, Tu -> 1, We -> 2, Th -> 3, Fr -> 4, Sa -> 5, Su -> 6)
+
+  implicit val NaturalOrdering = new Ordering[Day] {
+    override def compare(x: Day, y: Day) = toInt(x) compare toInt(y)
+  }
+}
 
 case class Hours(days: List[Day], period: Period) extends Chronos
 
