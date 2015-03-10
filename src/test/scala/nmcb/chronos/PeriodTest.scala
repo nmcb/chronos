@@ -43,12 +43,12 @@ class PeriodTest extends FlatSpec with Matchers {
   }
 
   it should "intersect another period" in {
-    (a1 intersect b1) shouldBe (None)
-    (a2 intersect b2) shouldBe (Some(Period(t2, t3)))
-    (a3 intersect b3) shouldBe (Some(Period(t2, t3)))
-    (a4 intersect b4) shouldBe (None)
-    (a5 intersect b5) shouldBe (Some(Period(t2, t3)))
-    (a6 intersect b6) shouldBe (Some(Period(t2, t3)))
+    (a1 intersection b1) shouldBe (None)
+    (a2 intersection b2) shouldBe (Some(Period(t2, t3)))
+    (a3 intersection b3) shouldBe (Some(Period(t2, t3)))
+    (a4 intersection b4) shouldBe (None)
+    (a5 intersection b5) shouldBe (Some(Period(t2, t3)))
+    (a6 intersection b6) shouldBe (Some(Period(t2, t3)))
   }
 
   it should "diff another period" in {

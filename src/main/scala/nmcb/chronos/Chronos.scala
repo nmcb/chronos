@@ -30,7 +30,7 @@ case class Period(from: Time, till: Time) extends Chronos {
       else Left(that)
     }
 
-  def intersect(that: Period): Option[Period] =
+  def intersection(that: Period): Option[Period] =
     if (from < that.from) {
       if (till < that.from) None
       else if (till < that.till) Some(Period(that.from, till))
@@ -80,6 +80,6 @@ object Day {
   }
 }
 
-case class Hours(days: List[Day], period: Period) extends Chronos
+case class Hours(days: List[Day], periods: List[Period]) extends Chronos
 
 

@@ -7,7 +7,7 @@ import org.parboiled.scala.parserunners.ReportingParseRunner
 object ChronosParser extends Parser {
 
   def HOURS = rule {
-    zeroOrMore(DAYS, separator = ",") ~ WS ~ PERIOD ~~> Hours
+    zeroOrMore(DAYS, separator = ",") ~ WS ~ oneOrMore(PERIOD, separator = ",") ~~> Hours
   }
 
   def DAYS = rule { MON | TUE | WED | THU | FRI | SAT | SUN }
