@@ -6,10 +6,19 @@ import org.parboiled.scala.parserunners.ReportingParseRunner
 
 object ChronosParser extends Parser {
 
-  def HOURS = rule {
-    zeroOrMore(DAYS, separator = ",") ~ WS ~ oneOrMore(PERIOD, separator = ",") ~~> Hours
+  def parse(str: String): Chronos = {
+    val parsingResult = ReportingParseRunner(HOURS).run(str)
+    parsingResult.result match {
+      case Some(i) => i
+      case None    => {
+        val msg = ErrorUtils.printParseErrors(parsingResult)
+        throw new errors.ParsingException("invalid input: " + msg)
+      }
+    }
   }
-
+  def HOURS = rule {
+                     zeroOrMore(DAYS, separator = ",") ~ WS ~ oneOrMore(PERIOD, separator = ",") ~~> Hours
+                   }
   def DAYS = rule { MON | TUE | WED | THU | FRI | SAT | SUN }
 
   def MON = rule { optional(WS) ~ "Mo" ~ push(Mo) }
@@ -24,17 +33,5 @@ object ChronosParser extends Parser {
   def TIME = rule { nTimes(1, PAIR ~ ":" ~ PAIR) ~> (s => Time(s)) }
   def PAIR = rule { DIGIT ~ DIGIT }
   def DIGIT = rule { "0" - "9" }
-
   def WS = rule { zeroOrMore(anyOf(" \n\r\t\f")) }
-
-  def parse(str: String): Chronos = {
-    val parsingResult = ReportingParseRunner(HOURS).run(str)
-    parsingResult.result match {
-      case Some(i) => i
-      case None    => {
-        val msg = ErrorUtils.printParseErrors(parsingResult)
-        throw new errors.ParsingException("invalid input: " + msg)
-      }
-    }
-  }
 }
