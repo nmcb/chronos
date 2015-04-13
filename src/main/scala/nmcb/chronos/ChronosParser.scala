@@ -1,4 +1,5 @@
 package nmcb.chronos
+
 import org.parboiled.errors
 import org.parboiled.errors.ErrorUtils
 import org.parboiled.scala.Parser
@@ -16,22 +17,24 @@ object ChronosParser extends Parser {
       }
     }
   }
-  def HOURS = rule {
-                     zeroOrMore(DAYS, separator = ",") ~ WS ~ oneOrMore(PERIOD, separator = ",") ~~> Hours
-                   }
-  def DAYS = rule { MON | TUE | WED | THU | FRI | SAT | SUN }
 
-  def MON = rule { optional(WS) ~ "Mo" ~ push(Mo) }
-  def TUE = rule { optional(WS) ~ "Tu" ~ push(Tu) }
-  def WED = rule { optional(WS) ~ "We" ~ push(We) }
-  def THU = rule { optional(WS) ~ "Th" ~ push(Th) }
-  def FRI = rule { optional(WS) ~ "Fr" ~ push(Fr) }
-  def SAT = rule { optional(WS) ~ "Sa" ~ push(Sa) }
-  def SUN = rule { optional(WS) ~ "Su" ~ push(Su) }
+  val HOURS = rule {
+    zeroOrMore(DAYS, separator = ",") ~ WS ~ oneOrMore(PERIOD, separator = ",") ~~> Hours
+  }
 
-  def PERIOD = rule { TIME ~ "-" ~ TIME ~~> Period ~ WS }
-  def TIME = rule { nTimes(1, PAIR ~ ":" ~ PAIR) ~> (s => Time(s)) }
-  def PAIR = rule { DIGIT ~ DIGIT }
-  def DIGIT = rule { "0" - "9" }
-  def WS = rule { zeroOrMore(anyOf(" \n\r\t\f")) }
+  val DAYS = rule { MON | TUE | WED | THU | FRI | SAT | SUN }
+
+  val MON = rule { optional(WS) ~ "Mo" ~ push(Mo) }
+  val TUE = rule { optional(WS) ~ "Tu" ~ push(Tu) }
+  val WED = rule { optional(WS) ~ "We" ~ push(We) }
+  val THU = rule { optional(WS) ~ "Th" ~ push(Th) }
+  val FRI = rule { optional(WS) ~ "Fr" ~ push(Fr) }
+  val SAT = rule { optional(WS) ~ "Sa" ~ push(Sa) }
+  val SUN = rule { optional(WS) ~ "Su" ~ push(Su) }
+
+  val PERIOD = rule { TIME ~ "-" ~ TIME ~~> Period ~ WS }
+  val TIME   = rule { nTimes(1, PAIR ~ ":" ~ PAIR) ~> (s => Time(s)) }
+  val PAIR   = rule { DIGIT ~ DIGIT }
+  val DIGIT  = rule { "0" - "9" }
+  val WS     = rule { zeroOrMore(anyOf(" \n\r\t\f")) }
 }
