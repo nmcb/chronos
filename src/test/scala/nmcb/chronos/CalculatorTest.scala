@@ -22,6 +22,6 @@ class CalculatorTest extends FlatSpec with Matchers {
   }
 
   it should "evaluate expressions correctly" in {
-    Calculator.evaluate("(1+2+3)*(4-5-6)/(7+8+9)") should be(3)
+    Calculator.evaluate("(1+2+3)*(4-5-6)/(7+8+9)") should be(-1.75)
   }
 }
