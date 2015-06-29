@@ -10,7 +10,7 @@ abstract class Expr
 case class Val(value: Double) extends Expr
 case class BiOp(operator: String, lhs: Expr, rhs: Expr) extends Expr
 
-object CalculatorParser extends Parser {
+object Calculator extends Parser {
   type R0 = Rule0
   type R1[A] = Rule1[A]
 
@@ -29,12 +29,11 @@ object CalculatorParser extends Parser {
   }
 
   def Factor: R1[Expr] = rule { "(" ~ Expr ~ ")" | Number }
-  def Number: R1[Val]  = rule { group(Integer ~ optional(Fraction)) ~> (s => Val(s.toDouble)) ~ WS }
+  def Number: R1[Val]  = rule { group(Integer ~ optional(Fraction)) ~> (s => Val(s.toDouble)) }
   def Fraction         = rule { "." ~ Digits }
   def Integer          = rule { optional("-") ~ (("1" - "9") ~ Digits | Digit) }
   def Digits           = rule { oneOrMore(Digit) }
   def Digit            = rule { "0" - "9" }
-  def WS               = rule { zeroOrMore(anyOf(" \n\r\t\f")) }
 
   def parse(str: String): Expr = {
     val parsingResult = ReportingParseRunner(Expr).run(str)

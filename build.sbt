@@ -8,4 +8,6 @@ libraryDependencies ++= Seq(
   "org.parboiled" % "parboiled-scala_2.11" % "1.1.7",
   "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test"
 )
+
+initialCommands in console := """import nmcb.chronos._"""
     
